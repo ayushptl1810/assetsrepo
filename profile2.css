@@ -407,7 +407,8 @@
 
   .scroll-content {
     display: flex;
-    animation: scroll 20s linear infinite;
+    animation: scroll 25s linear infinite;
+    transition: transform 0.3s ease;
   }
 
   .scroll-content:hover {
@@ -417,15 +418,20 @@
   .card {
     background-color: var(--clr-white);
     padding: 1rem;
+    width: 25vw;
     border-radius: var(--border-radius-2);
-    transition: transform 0.3s ease;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin: 0 5rem;
-    width: 15rem;
+    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    overflow: hidden;
 
     img {
-      width: 256px;
-      height: 256px;
+      width: 100%;
+      height: 350px;
     }
 
     :hover {
