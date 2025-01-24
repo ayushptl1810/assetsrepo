@@ -396,6 +396,13 @@
     padding: 1rem 5rem;
     box-shadow: 0px 5px 5px black;
     cursor: pointer;
+    transition: transform 0.3s ease, border 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .getstarted-btn:hover {
+    transform: scale(1.1);
+    border: 2px solid black;
+    box-shadow: 0px 8px 10px rgba(0, 0, 0, 0.5);
   }
 
   .flex-columns {
@@ -440,6 +447,33 @@
   }
 
   .card * {
+    margin-bottom: 5px;
+  }
+
+  .profile-img {
+    width: 45px;
+
+    border-radius: 50%;
+  }
+
+  .three-col {
+    display: grid;
+    height: 10vw;
+    margin-top: 4rem;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  .icons {
+    display: flex;
+    margin-right: 2rem;
+
+    img {
+      width: 45px;
+      height: 45px;
+    }
+  }
+
+  .footer-list ul li {
     margin-bottom: 5px;
   }
 }
