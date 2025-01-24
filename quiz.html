@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="quiz.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;700&family=Outfit:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <main class="main">
+      <div class="sidebar">
+        <nav class="nav">
+          <img src="Logo.jpeg" class="logo" />
+          <ul role="list">
+            <li>Profile</li>
+            <li>Courses</li>
+            <li>Upload</li>
+            <li>Log out</li>
+          </ul>
+        </nav>
+      </div>
+
+      <div class="quiz-page">
+        <div class="progress">
+          <div class="progress-text">STEP 1 OUT OF 5</div>
+          <div class="progress-bar">
+            <div class="progress-bar-fill"></div>
+          </div>
+        </div>
+        <div class="question">
+          <h2 class="font-heading-regular"></h2>
+        </div>
+
+        <div class="options-container">
+          <div class="options font-heading-regular" id="optionA">A</div>
+          <div class="options font-heading-regular" id="optionB">B</div>
+          <div class="options font-heading-regular" id="optionC">C</div>
+          <div class="options font-heading-regular" id="optionD">D</div>
+        </div>
+
+        <div class="btn-container">
+          <button class="btn" id="prev" onclick="prevQuestion()">
+            Previous
+          </button>
+          <button class="btn" id="next" onclick="nextQuestion()">Next</button>
+          <button
+            class="btn"
+            id="finish"
+            onclick="finishQuiz()"
+            style="display: none"
+          >
+            Finish
+          </button>
+        </div>
+      </div>
+    </main>
+  </body>
+
+  <script>
+    let currentIndex = 0;
+    let questions = [];
+    let totalQuestions = 0;
+    let userAnswers = []; // Array to store user choices
+
+    // Fetch questions from the backend
+    async function fetchQuestions() {
+      const response = await fetch("/quiz_data");
+      const data = await response.json();
+      questions = data.questions;
+      totalQuestions = questions.length;
+
+      // Initialize userAnswers array with null (unanswered)
+      userAnswers = new Array(totalQuestions).fill(null);
+
+      loadQuestion(currentIndex);
+      updateProgressBar();
+    }
+
+    // Load a question dynamically
+    function loadQuestion(index) {
+      const questionElement = document.querySelector(".question");
+      const optionsElement = document.querySelector(".options");
+      const question = questions[index];
+
+      questionElement.textContent = question.question;
+      optionsElement.innerHTML = question.options
+        .map(
+          (option, i) => `
+      <div class="options">
+        <input type="radio" id="option${i}" name="answer" value="${option}" ${
+            userAnswers[index] === option ? "checked" : ""
+          } onclick="selectAnswer('${option}')">
+        <label for="option${i}">${option}</label>
+      </div>
+    `
+        )
+        .join("");
+
+      // Show/hide buttons based on question index
+      document.getElementById("prev").style.display =
+        index === 0 ? "none" : "inline-block";
+      document.getElementById("next").style.display =
+        index === totalQuestions - 1 ? "none" : "inline-block";
+      document.getElementById("finish").style.display =
+        index === totalQuestions - 1 ? "inline-block" : "none";
+    }
+
+    // Save user's answer
+    function selectAnswer(answer) {
+      userAnswers[currentIndex] = answer;
+    }
+
+    // Navigate to the next question
+    function nextQuestion() {
+      if (currentIndex < totalQuestions - 1) {
+        currentIndex++;
+        loadQuestion(currentIndex);
+        updateProgressBar();
+      }
+    }
+
+    // Navigate to the previous question
+    function prevQuestion() {
+      if (currentIndex > 0) {
+        currentIndex--;
+        loadQuestion(currentIndex);
+        updateProgressBar();
+      }
+    }
+
+    // Update the progress bar
+    function updateProgressBar() {
+      const progress = ((currentIndex + 1) / totalQuestions) * 100;
+      document.getElementById("progress-bar").style.width = progress + "%";
+    }
+
+    // Finish the quiz and send data to the backend
+    async function finishQuiz() {
+      if (userAnswers.includes(null)) {
+        alert("Please answer all questions before finishing!");
+        return;
+      }
+
+      const response = await fetch("/submit_answers", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ answers: userAnswers }),
+      });
+
+      const result = await response.json();
+      alert(`Quiz finished! Your score: ${result.score}`);
+    }
+
+    fetchQuestions();
+  </script>
+</html>
