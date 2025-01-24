@@ -189,32 +189,14 @@
     margin-top: 3rem;
   }
 
-  .btn {
-    padding: 8px 16px;
-    border-radius: 6px;
-    border: none;
-    cursor: pointer;
-    font-weight: 500;
-  }
-
-  .btn-primary {
-    background-color: var(--primary);
-    color: white;
-  }
-
-  .btn-secondary {
-    background-color: var(--surface);
-    color: var(--text);
-    border: 1px solid var(--border);
-  }
-
   .leaderboard {
+    margin-top: 3rem;
     width: 100%;
     border-collapse: collapse;
   }
 
   .leaderboard th {
-    text-align: left;
+    text-align: center;
     width: 6rem;
     font-size: var(--font-size-lg);
     padding: 12px;
@@ -222,6 +204,7 @@
 
   .leaderboard td {
     padding: 12px;
+    text-align: center;
     font-size: var(--font-size-lg);
     border-top: 1px solid var(--clr-grey-800);
   }
@@ -229,6 +212,7 @@
   .player-cell {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 10px;
 
     img {
