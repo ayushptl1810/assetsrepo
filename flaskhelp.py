@@ -135,3 +135,53 @@ def send_reset_email(user):
     If you did not make this request, simply ignore this email.
     '''
     send_email(user.email, subject, body)
+
+
+
+
+
+
+#profile pic route 
+import os
+from werkzeug.utils import secure_filename
+
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS'] 
+
+# ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+
+@app.route('/upload_profile_pic', methods=['POST'])
+@auth_required
+def upload_profile_pic():
+    if 'profile_pic' not in request.files:
+        #flash('No file part')
+        return redirect(url_for('profile'))
+    
+    file = request.files['profile_pic']
+    
+    if file.filename == '':
+        #flash('No selected file')
+        return redirect(url_for('profile'))
+    
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        user_id = session['user_id']
+
+        new_filename = f"user_{user_id}.{filename.rsplit('.', 1)[1].lower()}"
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], new_filename))
+
+        # UPLOAD_FOLDER = 'static/profile_pic'
+        # create a folder called static and inside create another folder for profile_pic
+
+        user = User.query.get(user_id)
+        user.profile_pic = new_filename
+        db.session.commit()
+        
+        #flash('Profile picture updated successfully')
+        return redirect(url_for('profile'))
+    
+    #flash('Invalid file format')
+    return redirect(url_for('home'))
+
+
