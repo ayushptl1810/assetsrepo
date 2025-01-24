@@ -1,0 +1,271 @@
+@layer reset {
+  /* Box sizing rules */
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  /* Prevent font size inflation */
+  html {
+    -moz-text-size-adjust: none;
+    -webkit-text-size-adjust: none;
+    text-size-adjust: none;
+  }
+
+  /* Remove default margin in favour of better control in authored CSS */
+  * {
+    margin: 0;
+  }
+
+  /* Remove list styles on ul, ol elements with a list role, which suggests default styling will be removed */
+  ul[role="list"],
+  ol[role="list"] {
+    list-style: none;
+    padding: 0;
+  }
+
+  /* Set core body defaults */
+  body {
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  /* Set shorter line heights on headings and interactive elements */
+  h1,
+  h2,
+  h3,
+  button,
+  input,
+  label {
+    line-height: 1.1;
+  }
+
+  /* Balance text wrapping on headings */
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-wrap: balance;
+  }
+
+  /* Make images easier to work with */
+  img,
+  picture {
+    max-width: 100%;
+    display: block;
+  }
+
+  /* Inherit fonts for inputs and buttons */
+  input,
+  button,
+  textarea,
+  select {
+    font: inherit;
+  }
+}
+
+@layer base {
+  :root {
+    --clr-grey-700: #333333;
+    --clr-grey-800: #222222;
+    --clr-grey-900: #000000;
+
+    --clr-white: #ffffff;
+    --clr-gray-100: #cbc8c8;
+
+    --clr-btn: #dcefad;
+    --clr-btn-hover: #f3fed6;
+
+    --ff-heading: "Outfit", sans-serif;
+    --ff-body: "Fira Sans", sans-serif;
+
+    --fs-300: 0.875rem;
+    --fs-400: 1rem;
+    --fs-500: 1.125rem;
+    --fs-600: 1.25rem;
+    --fs-700: 1.5rem;
+    --fs-800: 2rem;
+    --fs-900: 3.75rem;
+    --fs-1000: 5rem;
+  }
+
+  :root {
+    --text-main: var(--clr-grey-800);
+    --text-main-light: var(--clr-grey-700);
+
+    --font-size-heading-sm: var(--fs-700);
+    --font-size-heading-regular: var(--fs-800);
+    --font-size-heading-lg: var(--fs-900);
+    --font-size-heading-xl: var(--fs-1000);
+
+    --font-size-sm: var(--fs-300);
+    --font-size-regular: var(--fs-400);
+    --font-size-md: var(--fs-500);
+    --font-size-lg: var(--fs-600);
+
+    --border-radius-1: 0.25rem;
+    --border-radius-2: 0.5rem;
+    --border-radius-3: 0.75rem;
+
+    --clr-main-background: #ffe8c1;
+
+    --clr-sidebar-background: #f3fed6;
+    --clr-sidebar-text: var(--clr-gray-900);
+  }
+
+  html {
+    font-family: var(--ff-body);
+    line-height: 1.6rem;
+    scroll-behavior: smooth;
+  }
+  body {
+    font-family: var(--ff-body);
+    font-size: var(--font-size-regular);
+    color: var(--text-main-light);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--ff-heading);
+    font-weight: 700;
+    color: var(--text-main);
+  }
+
+  h1 {
+    font-size: var(--font-size-heading-lg);
+  }
+
+  img {
+    border-radius: var(--border-radius-3);
+  }
+
+  .background-img {
+    background-image: url(/10130.jpg);
+    background-size: cover;
+    background-position: center;
+  }
+}
+
+@layer layout {
+  .main {
+    display: grid;
+    grid-template-columns: 0.25fr 1fr;
+  }
+
+  .sidebar {
+    background-color: var(--clr-sidebar-background);
+    height: 100vw;
+  }
+
+  .logo {
+    width: 100px;
+    height: auto;
+    scale: 0.8;
+  }
+
+  .nav {
+    color: var(--clr-sidebar-text);
+
+    ul {
+      gap: 4rem;
+      font-size: var(--font-size-heading-sm);
+      padding: 2rem;
+
+      li {
+        margin: 1rem;
+      }
+    }
+  }
+
+  .leaderboard-page {
+    padding: 20px;
+    background: var(--clr-main-background);
+  }
+
+  .header {
+    margin-top: 3rem;
+  }
+
+  .btn {
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+  }
+
+  .btn-primary {
+    background-color: var(--primary);
+    color: white;
+  }
+
+  .btn-secondary {
+    background-color: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+
+  .leaderboard {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .leaderboard th {
+    text-align: left;
+    width: 6rem;
+    font-size: var(--font-size-lg);
+    padding: 12px;
+  }
+
+  .leaderboard td {
+    padding: 12px;
+    font-size: var(--font-size-lg);
+    border-top: 1px solid var(--clr-grey-800);
+  }
+
+  .player-cell {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    img {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+    }
+  }
+}
+
+@layer utilities {
+  .font-size-sm {
+    font-size: var(--font-size-sm);
+  }
+  .font-size-regular {
+    font-size: var(--font-size-regular);
+  }
+  .font-size-md {
+    font-size: var(--font-size-md);
+  }
+  .font-size-lg {
+    font-size: var(--font-size-lg);
+  }
+  .font-heading-lg {
+    font-size: var(--font-size-heading-lg);
+  }
+  .font-heading-xl {
+    font-size: var(--font-size-heading-xl);
+  }
+  .font-heading-regular {
+    font-size: var(--font-size-heading-regular);
+  }
+  .font-heading-sm {
+    font-size: var(--font-size-heading-sm);
+  }
+
+  .text-center {
+    text-align: center;
+  }
+}
