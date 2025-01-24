@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="profile2.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;700&family=Outfit:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <main class="main">
+      <div class="sidebar">
+        <nav class="nav">
+          <img src="Logo.jpeg" class="logo" />
+          <ul role="list">
+            <li>Profile</li>
+            <li>Courses</li>
+            <li>Upload</li>
+            <li>Log out</li>
+          </ul>
+        </nav>
+      </div>
+
+      <div class="profile-page">
+        <div class="profile-photo-container background-image">
+          <h2 class="font-heading-regular">Profile picture</h2>
+          <img
+            src="owl-svgrepo-com.svg"
+            alt="Profile image"
+            class="profile-pic"
+          />
+          <h3 class="font-size-lg">Badges</h3>
+          <div class="badges">
+            <img src="/Badge1.jpeg" alt="" />
+            <img src="/Badge2.jpeg" alt="" />
+            <img src="/Badge3.jpeg" alt="" />
+          </div>
+        </div>
+
+        <div class="profile-details-container">
+          <form>
+            <label class="font-size-md">Profile name</label>
+            <input type="text" class="input-field" placeholder="Name" />
+
+            <label class="font-size-md">Username</label>
+            <div class="username-field">
+              <span>@</span>
+              <input type="text" class="input-field" placeholder="Username" />
+            </div>
+
+            <label class="font-size-md">Email</label>
+            <input
+              type="text"
+              class="input-field"
+              placeholder="example@email.com"
+            />
+
+            <label class="font-size-md">About me</label>
+            <textarea class="input-field" placeholder="Bio"></textarea>
+
+            <label class="font-size-md">Upload new profile image: </label>
+            <input type="file" class="input-field" />
+
+            <button class="save-button">Save changes</button>
+          </form>
+
+          <h2 class="font-size-md">Calendar Heatmap</h2>
+          <div class="calendar-container">
+            <div class="month-header">
+              <button id="prev-month">&lt; Prev</button>
+              <div id="month-year"></div>
+              <button id="next-month">Next &gt;</button>
+            </div>
+
+            <div class="days-of-week">
+              <div>Su</div>
+              <div>Mo</div>
+              <div>Tu</div>
+              <div>We</div>
+              <div>Th</div>
+              <div>Fr</div>
+              <div>Sa</div>
+            </div>
+            <div class="calendar-grid" id="calendar-grid"></div>
+          </div>
+
+          <!-- Legend -->
+          <div class="legend">
+            <span>Less</span>
+            <div class="less"></div>
+            <div class="low"></div>
+            <div class="medium"></div>
+            <div class="high"></div>
+            <span>More</span>
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
+
+  <script>
+    const calendarGrid = document.getElementById("calendar-grid");
+    const monthYearDisplay = document.getElementById("month-year");
+    const prevMonthButton = document.getElementById("prev-month");
+    const nextMonthButton = document.getElementById("next-month");
+
+    const today = new Date();
+    let currentMonth = today.getMonth();
+    let currentYear = today.getFullYear();
+
+    function generateRandomContributions(days) {
+      return Array.from({ length: days }, () => Math.floor(Math.random() * 10));
+    }
+
+    function updateCalendar(month, year) {
+      calendarGrid.innerHTML = "";
+
+      const firstDay = new Date(year, month, 1).getDay();
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+      const monthNames = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+      ];
+      monthYearDisplay.textContent = `${monthNames[month]} ${year}`;
+
+      const contributions = generateRandomContributions(daysInMonth);
+
+      for (let i = 0; i < firstDay; i++) {
+        const emptyDay = document.createElement("div");
+        emptyDay.classList.add("day", "empty");
+        calendarGrid.appendChild(emptyDay);
+      }
+
+      for (let day = 1; day <= daysInMonth; day++) {
+        const dayElement = document.createElement("div");
+        dayElement.textContent = day;
+        dayElement.classList.add("day");
+
+        const contribution = contributions[day - 1];
+        if (contribution > 7) {
+          dayElement.classList.add("high");
+        } else if (contribution > 4) {
+          dayElement.classList.add("medium");
+        } else if (contribution > 0) {
+          dayElement.classList.add("low");
+        }
+
+        dayElement.title = `Day ${day}: ${contribution} contributions`;
+
+        calendarGrid.appendChild(dayElement);
+      }
+    }
+
+    prevMonthButton.addEventListener("click", () => {
+      currentMonth--;
+      if (currentMonth < 0) {
+        currentMonth = 11;
+        currentYear--;
+      }
+      updateCalendar(currentMonth, currentYear);
+    });
+
+    nextMonthButton.addEventListener("click", () => {
+      currentMonth++;
+      if (currentMonth > 11) {
+        currentMonth = 0;
+        currentYear++;
+      }
+      updateCalendar(currentMonth, currentYear);
+    });
+
+    updateCalendar(currentMonth, currentYear);
+  </script>
+</html>
